@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+bsi_index_generator.access_index_file_generator,access_index_file_generator,bsi_index_generator.model_index_file_generator,base.group_user,1,1,1,1
+bsi_index_generator.access_index_generator_feature,access_index_generator_feature,bsi_index_generator.model_index_generator_feature,base.group_user,1,1,1,1
+bsi_index_generator.access_module_steps,access_module_steps,bsi_index_generator.model_module_steps,base.group_user,1,1,1,1

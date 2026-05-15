@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="bsi_index_file_generator_list_view" model="ir.ui.view">
+        <field name="name">bsi.index.file.generator.list.view</field>
+        <field name="model">index.file.generator</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="company_name" />
+                <field name="version" />
+                <field name="main_header" />
+            </list>
+        </field>
+    </record>
+
+    <record id="bsi_index_file_generator_form_view" model="ir.ui.view">
+        <field name="name">bsi.index.file.generator.form.view</field>
+        <field name="model">index.file.generator</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_generate_html" type="object" string="Generate HTML" class="btn-primary"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="generated_filename" />
+                        <field name="template_file" />
+                    </group>
+                    <group>
+                        <group string="Comapny Details" class="text-muted">
+                            <field name="company_name" />
+                            <!-- <field name="company_email" /> -->
+                            <field name="version" />
+                            <field name="main_header" />
+                            <!-- <field name="website" /> -->
+                            <field name="main_des" />
+                        </group>
+                        <group string="Module Information" class="text-muted">
+                            <field name="demo_video_link" />
+                            <field name="demo_heading" />
+                            <field name="demo_des" />
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page name="Module steps" string="Module Steps">
+                            <group>
+                                <field name="sub_heading" />
+                                <field name="sub_des" />
+                            </group>
+                            <field name="module_steps">
+                                <list editable="bottom">
+                                    <field name="module_step_icon" />
+                                    <field name="module_step_heading" />
+                                    <field name="module_step_des" />
+                                </list>
+                            </field>
+                        </page>
+
+                        <page name="Features" string="Features">
+                            <group>
+                                <field name="feature_main_des" string="Feature Description" />
+                            </group>
+                            <field name="feature_ids">
+                                <list editable="bottom">
+                                    <field name="feature_heading" />
+                                    <field name="feature_des" />
+                                    <field name="feature_icon" string="Icon" />
+                                </list>
+                            </field>
+                            
+                        </page>
+
+                        <page name="Screenshots" string="Screenshots">
+                            <group>
+                                <field name="ss_des" />
+                                <field name="screenshot_attachment_ids" widget="many2many_binary" />
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="bsi_index_generate_action" model="ir.actions.act_window">
+        <field name="name">Index Generate</field>
+        <field name="res_model">index.file.generator</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="bsi_index_generate_root_menu" name="Bsi Index Generate" sequence="1"/>
+    <menuitem id="bsi_index_generate_menu" name="Index" action="bsi_index_generate_action" parent="bsi_index_generate_root_menu" sequence="2"/>
+
+</odoo>

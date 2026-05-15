@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Date & Datetime Format — Botspot Infoware</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+
+:root {
+  --plum-950: #1a0c18;
+  --plum-900: #2d1a2a;
+  --plum-800: #3e2239;
+  --ink:      #9d4c90;
+  --ink-mid:  #bb54aa;
+  --ink-soft: #d48dca;
+  --gold:     #c49a42;
+  --gold-deep:#9a7030;
+  --gold-pale:#f5edd8;
+
+  --surface:       #ffffff;
+  --surface-warm:  #fdfcfa;
+  --surface-tint:  #f8f4ff;
+  --surface-muted: #f4f0f8;
+
+  --line:       rgba(0, 0, 0, 0.08);
+  --line-gold:  rgba(0, 0, 0, 0.08);
+
+  --r-xl: 28px;
+  --r-lg: 20px;
+  --r-md: 14px;
+  --r-sm: 9px;
+
+  --shadow-card: 0 2px 16px rgba(0,0,0,0.07), 0 1px 3px rgba(0,0,0,0.04);
+  --shadow-lift: 0 12px 36px rgba(0,0,0,0.12), 0 2px 6px rgba(0,0,0,0.05);
+  --shadow-hero: 0 32px 80px rgba(45,26,42,0.16);
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: "DM Sans", sans-serif;
+  color: var(--plum-900);
+  line-height: 1.7;
+  background: #f6f5f7;
+  overflow-x: hidden;
+}
+img { display: block; max-width: 100%; }
+a { color: var(--ink); text-decoration: none; transition: color 0.2s; }
+a:hover { color: var(--gold-deep); }
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  opacity: 0.022;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  padding: 0.7rem 0;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  border-bottom: 1px solid var(--line);
+  transition: box-shadow 0.3s var(--ease-out);
+}
+.topbar.scrolled { box-shadow: 0 4px 32px rgba(45,26,42,0.1); }
+
+.brand-mark {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: var(--plum-900);
+  font-weight: 600;
+}
+.brand-mark .logo-wrap {
+  width: 2.25rem; height: 2.25rem;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #f3edfb, #ecdff7);
+  border: 1px solid var(--line);
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden; padding: 0.15rem;
+}
+.brand-mark .logo-wrap img { width: 100%; height: 100%; object-fit: contain; }
+.brand-mark strong { font-size: 0.875rem; color: var(--plum-900); line-height: 1.2; }
+.brand-mark small { display: block; color: var(--ink); font-size: 0.7rem; font-weight: 400; }
+.topbar-right { font-size: 0.78rem; color: #9a7a94; font-weight: 500; letter-spacing: 0.03em; }
+
+.hero-section {
+  position: relative;
+  padding: 5rem 0 6rem;
+  overflow: hidden;
+}
+
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.38rem 1rem 0.38rem 0.55rem;
+  border-radius: 999px;
+  background: rgba(157,76,144,0.07);
+  border: 1px solid rgba(157,76,144,0.16);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+}
+.hero-eyebrow .dot {
+  width: 6px; height: 6px;
+  background: var(--ink);
+  border-radius: 50%;
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.7); }
+}
+
+/* date ticker strip */
+.date-ticker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: #FFFFFF;
+  border: 1px solid var(--line);
+  border-radius: 66px;
+  padding: 0.35rem 1rem 0.35rem 1.1rem;
+  margin-bottom: 1.5rem;
+  box-shadow: var(--shadow-card);
+}
+.ticker-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #9a7a94;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.format-pill {
+  background: rgba(157,76,144,0.1);
+  padding: 0.2rem 0.7rem;
+  border-radius: 40px;
+  font-family: "DM Sans", monospace;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+.ticker-sep { color: var(--line); }
+
+.hero-title {
+  font-family: "DM Serif Display", serif;
+  font-size: clamp(2.6rem, 5.5vw, 4.5rem);
+  line-height: 1.06;
+  color: var(--plum-950);
+  letter-spacing: -0.02em;
+  margin-bottom: 1.5rem;
+}
+.hero-title em {
+  font-style: italic;
+  background: linear-gradient(120deg, var(--ink), var(--ink-mid));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-sub {
+  font-size: 1.05rem;
+  color: #6b5266;
+  max-width: 32rem;
+  line-height: 1.7;
+  font-weight: 400;
+  margin-bottom: 2.5rem;
+}
+
+.hero-cta-row {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 3rem;
+}
+
+.btn-primary-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.72rem 1.5rem;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--ink), #8a3d80);
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.88rem;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(157,76,144,0.3);
+  transition: transform 0.2s var(--ease-out), box-shadow 0.2s;
+}
+.btn-primary-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(157,76,144,0.4);
+  color: #fff;
+}
+.btn-primary-cta svg { width: 1rem; height: 1rem; fill: currentColor; }
+
+.btn-ghost-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.72rem 1.4rem;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--plum-900);
+  font-weight: 500;
+  font-size: 0.88rem;
+  border: 1.5px solid var(--line);
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s, transform 0.2s;
+}
+.btn-ghost-cta:hover {
+  border-color: var(--ink);
+  background: rgba(157,76,144,0.04);
+  transform: translateY(-1px);
+  color: var(--ink);
+}
+
+/* Hero metrics strip */
+.hero-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: rgba(0,0,0,0.07);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  border: 1px solid rgba(0,0,0,0.07);
+}
+.metric-item {
+  background: #ffffff;
+  padding: 1.1rem 1.25rem;
+  text-align: center;
+  transition: background 0.2s;
+}
+.metric-item:hover { background: #fafafa; }
+.metric-num {
+  display: block;
+  font-family: "Syne", sans-serif;
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--ink);
+  line-height: 1;
+  margin-bottom: 0.2rem;
+}
+.metric-label {
+  font-size: 0.72rem;
+  color: #9a7a94;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* Info panel (right side) */
+.hero-info-panel {
+  background: #ffffff;
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: var(--r-xl);
+  padding: 2rem;
+  box-shadow: var(--shadow-card);
+  height: 100%;
+}
+.info-panel-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.32rem 0.8rem;
+  background: #f5f0e8;
+  border: 1px solid rgba(0,0,0,0.09);
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--gold-deep);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 1.2rem;
+}
+.hero-list { list-style: none; padding: 0; }
+.hero-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  padding: 0.65rem 0;
+  font-size: 0.9rem;
+  color: #5a4040;
+  border-bottom: 1px solid rgba(185,134,66,0.1);
+  font-weight: 450;
+}
+.hero-list li:last-child { border-bottom: none; }
+.hero-list li .check {
+  flex-shrink: 0;
+  width: 1.2rem; height: 1.2rem;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--gold), #e8b850);
+  display: flex; align-items: center; justify-content: center;
+  margin-top: 0.15rem;
+}
+.hero-list li .check svg { width: 0.6rem; height: 0.6rem; fill: #fff; }
+
+.section-block {
+  position: relative;
+  padding: 5.5rem 0;
+}
+.section-block + .section-block { border-top: 1px solid rgba(0,0,0,0.05); }
+.section-block.tinted { background: rgba(0,0,0,0.022); }
+.section-block.warm { background: transparent; }
+
+.section-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: var(--gold-deep);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+}
+.section-eyebrow::before {
+  content: "";
+  width: 2rem; height: 1.5px;
+  background: rgba(157,76,144,0.3);
+  border-radius: 1px;
+}
+
+.section-title {
+  font-family: "DM Serif Display", serif;
+  font-size: clamp(1.9rem, 3.2vw, 2.9rem);
+  line-height: 1.12;
+  color: var(--plum-950);
+  letter-spacing: -0.015em;
+  margin-bottom: 0.9rem;
+}
+.section-copy {
+  font-size: 1rem;
+  color: #7a5c74;
+  max-width: 42rem;
+  margin: 0 auto;
+  line-height: 1.75;
+}
+
+.workflow-card {
+  position: relative;
+  padding: 2rem 1.5rem;
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: var(--r-xl);
+  box-shadow: var(--shadow-card);
+  text-align: center;
+  height: 100%;
+  overflow: hidden;
+  transition: transform 0.25s var(--ease-out), box-shadow 0.25s;
+}
+.workflow-card::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--ink), var(--ink-soft));
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+.workflow-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lift); }
+.workflow-card:hover::before { opacity: 1; }
+
+.workflow-number {
+  font-family: "Syne", sans-serif;
+  font-size: 3rem;
+  font-weight: 800;
+  color: rgba(157,76,144,0.08);
+  line-height: 1;
+  margin-bottom: 0.75rem;
+  letter-spacing: -0.04em;
+}
+.workflow-card h6 {
+  font-family: "Syne", sans-serif;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--plum-900);
+  margin-bottom: 0.5rem;
+}
+.workflow-card p {
+  font-size: 0.92rem;
+  color: #6b5266;
+  line-height: 1.65;
+  font-weight: 450;
+}
+
+.video-wrap {
+  position: relative;
+  border-radius: var(--r-xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-hero);
+  border: 1px solid var(--line);
+  aspect-ratio: 16/9;
+  background: #f0edf3;
+}
+.video-wrap img { width: 100%; height: 100%; object-fit: cover; }
+.video-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(160deg, rgba(26,12,24,0.1), rgba(26,12,24,0.45));
+  transition: background 0.3s;
+}
+.video-wrap:hover .video-overlay {
+  background: linear-gradient(160deg, rgba(26,12,24,0.15), rgba(26,12,24,0.55));
+}
+.play-btn {
+  width: 5.5rem; height: 5.5rem;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.95);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.2);
+  transition: transform 0.2s var(--ease-out), box-shadow 0.2s;
+}
+.video-wrap:hover .play-btn {
+  transform: scale(1.06);
+  box-shadow: 0 20px 56px rgba(0,0,0,0.28);
+}
+.play-btn svg { width: 1.6rem; height: 1.6rem; fill: var(--ink); margin-left: 0.18rem; }
+
+.feature-card {
+  padding: 1.75rem 1.5rem;
+  background: #ffffff;
+  border: 1px solid rgba(0,0,0,0.07);
+  border-radius: var(--r-xl);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  text-align: left;
+  height: 100%;
+  transition: transform 0.25s var(--ease-out), box-shadow 0.25s, border-color 0.25s;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+.feature-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lift);
+  border-color: rgba(157,76,144,0.2);
+}
+.feature-icon-wrap {
+  width: 3rem; height: 3rem;
+  border-radius: 14px;
+  background: #f5f0f9;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.feature-icon-wrap svg { width: 1.2rem; height: 1.2rem; fill: var(--ink); }
+.feature-card h6 {
+  font-family: "Syne", sans-serif;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--plum-900);
+  letter-spacing: 0.01em;
+}
+.feature-card p {
+  font-size: 0.875rem;
+  color: #7a6075;
+  line-height: 1.65;
+  margin: 0;
+  flex: 1;
+}
+
+.screenshot-card {
+  background: #ffffff;
+  border: 1px solid rgba(0,0,0,0.07);
+  border-radius: var(--r-xl);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  padding: 1.75rem;
+  text-align: center;
+  transition: box-shadow 0.25s, transform 0.25s;
+  height: 100%;
+}
+.screenshot-card:hover { box-shadow: var(--shadow-lift); transform: translateY(-3px); }
+.step-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.3rem 0.85rem;
+  border-radius: 999px;
+  background: #f2f2f2;
+  border: 1px solid rgba(0,0,0,0.08);
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: var(--gold-deep);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 0.65rem;
+}
+.screenshot-card img {
+  width: 80%; max-width: 720px;
+  margin: 0 auto;
+  border-radius: var(--r-md);
+  border: 1px solid var(--line);
+  box-shadow: 0 4px 16px rgba(45,26,42,0.08);
+}
+
+.release-card {
+  padding: 1.75rem;
+  background: #ffffff;
+  border: 1px solid rgba(0,0,0,0.07);
+  border-radius: var(--r-xl);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  height: 100%;
+  transition: transform 0.2s;
+  text-align: center;
+}
+.release-card:hover { transform: translateY(-3px); }
+.release-card.latest { background: #fffef9; border-color: rgba(185,134,66,0.18); }
+.release-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.32rem 0.8rem;
+  border-radius: 999px;
+  background: var(--gold-pale);
+  border: 1px solid var(--line-gold);
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--gold-deep);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.release-card:not(.latest) .release-badge {
+  background: var(--surface-muted);
+  border-color: var(--line);
+  color: #9a7a94;
+}
+.release-version {
+  font-family: "Syne", sans-serif;
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--plum-950);
+  line-height: 1;
+  margin: 0.85rem 0 0.5rem;
+  letter-spacing: -0.03em;
+}
+.release-card p { font-size: 0.9rem; color: #7a6070; margin: 0; line-height: 1.65; }
+
+.module-card {
+  display: block;
+  overflow: hidden;
+  border-radius: var(--r-lg);
+  border: 1px solid var(--line);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  transition: transform 0.25s var(--ease-out), box-shadow 0.25s;
+  background: #ffffff;
+}
+.module-card:hover { transform: translateY(-5px) scale(1.01); box-shadow: var(--shadow-lift); }
+.module-card img { width: 100%; border-radius: inherit; }
+
+.language-card {
+  background: #ffffff;
+  border: 1px solid rgba(0,0,0,0.07);
+  border-radius: var(--r-lg);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  padding: 1.25rem 1rem;
+  text-align: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+  height: 100%;
+}
+.language-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lift);
+  border-color: rgba(157,76,144,0.2);
+}
+.flag-wrap {
+  width: 3.5rem; height: 2.5rem;
+  margin: 0 auto 0.75rem;
+  border-radius: var(--r-sm);
+  overflow: hidden;
+  border: 1px solid var(--line);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.flag-wrap img { width: 100%; height: 100%; object-fit: cover; }
+.language-card span { font-weight: 600; font-size: 0.85rem; color: var(--plum-900); }
+
+.language-note {
+  padding: 1.1rem 1.5rem;
+  border-radius: var(--r-lg);
+  border: 1px solid rgba(0,0,0,0.07);
+  background: #ffffff;
+  font-size: 0.85rem;
+  color: #7a6040;
+  line-height: 1.6;
+  text-align: center;
+}
+.language-note a { color: var(--gold-deep); font-weight: 600; }
+.language-note a:hover { color: var(--ink); }
+
+.service-card {
+  background: #ffffff;
+  border: 1px solid rgba(0,0,0,0.07);
+  border-radius: var(--r-lg);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  padding: 1.5rem 1rem;
+  text-align: center;
+  height: 100%;
+  transition: transform 0.22s var(--ease-out), box-shadow 0.22s, border-color 0.22s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.7rem;
+}
+.service-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lift);
+  border-color: rgba(157,76,144,0.2);
+}
+.service-icon-wrap {
+  width: 3.25rem; height: 3.25rem;
+  border-radius: 14px;
+  background: #f4f2f7;
+  border: 1px solid var(--line);
+  display: flex; align-items: center; justify-content: center;
+}
+.service-icon-wrap img { width: 1.7rem; height: 1.7rem; object-fit: contain; }
+.service-card h6 { font-weight: 600; font-size: 0.83rem; color: var(--plum-900); line-height: 1.4; margin: 0; }
+
+.support-card {
+  background: #ffffff;
+  border: 1px solid rgba(0,0,0,0.07);
+  border-radius: var(--r-xl);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  padding: 1.75rem;
+  display: flex;
+  gap: 1.1rem;
+  align-items: flex-start;
+  height: 100%;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.support-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lift); }
+.support-icon-wrap {
+  width: 3rem; height: 3rem;
+  flex-shrink: 0;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--ink), #7a3570);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 6px 18px rgba(157,76,144,0.25);
+}
+.support-icon-wrap img {
+  width: 1.45rem; height: 1.45rem;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+}
+.support-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-bottom: 0.3rem;
+}
+.support-value { font-size: 0.95rem; font-weight: 600; color: var(--plum-900); word-break: break-word; }
+.support-value a { color: var(--ink); font-weight: 600; }
+.support-value a:hover { color: var(--gold-deep); }
+
+.site-footer {
+  background: linear-gradient(180deg, #201228 0%, #1a0c18 40%);
+  padding: 3rem 0 2rem;
+}
+.footer-brand strong {
+  font-family: "DM Serif Display", serif;
+  font-size: 1.15rem;
+  color: #fff;
+}
+.footer-brand small { display: block; font-size: 0.75rem; color: rgba(255,255,255,0.4); margin-top: 0.2rem; }
+.footer-copy { font-size: 0.8rem; color: rgba(255,255,255,0.3); text-align: right; }
+.footer-divider { border-color: rgba(255,255,255,0.07); margin: 1.5rem 0 1.25rem; }
+.footer-tagline { font-size: 0.75rem; color: rgba(255,255,255,0.22); text-align: center; letter-spacing: 0.05em; }
+
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.65s var(--ease-out), transform 0.65s var(--ease-out);
+}
+.reveal.visible { opacity: 1; transform: none; }
+.reveal-delay-1 { transition-delay: 0.08s; }
+.reveal-delay-2 { transition-delay: 0.16s; }
+.reveal-delay-3 { transition-delay: 0.24s; }
+.reveal-delay-4 { transition-delay: 0.32s; }
+.reveal-delay-5 { transition-delay: 0.40s; }
+.reveal-delay-6 { transition-delay: 0.48s; }
+
+@media (max-width: 991.98px) {
+  .hero-title { font-size: clamp(2.2rem, 6vw, 3rem); }
+  .section-block { padding: 4rem 0; }
+  .hero-metrics { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 767.98px) {
+  .hero-section { padding: 3.5rem 0 4rem; }
+  .section-block { padding: 3rem 0; }
+  .hero-metrics { grid-template-columns: 1fr; }
+  .screenshot-card img { width: 95%; }
+  .footer-copy { text-align: left; margin-top: 0.5rem; }
+}
+</style>
+</head>
+<body>
+
+<header class="topbar" id="topbar">
+  <div class="container d-flex justify-content-between align-items-center">
+    <div class="brand-mark">
+      <div class="logo-wrap"><img src="assets/icons/logo.png" alt="Botspot Infoware logo"></div>
+      <div class="company_name" id="company_name"><strong></strong><small>Odoo Business Solutions</small></div>
+    </div>
+    <div class="topbar-right d-none d-sm-block">Date &amp; Datetime Format for Odoo</div>
+  </div>
+</header>
+
+<section class="hero-section">
+  <div class="container">
+    <div class="row align-items-center g-5">
+
+      <div class="col-lg-7">
+        <div id="reveal" class="reveal"><span id="hero_eyebrow" class="hero-eyebrow"><span class="dot"></span></span></div>
+        <h1 id="hero_heading" class="hero-title reveal reveal-delay-2">Dates, your way.<br><em>Globally.</em></h1>
+        <p id="hero_description" class="hero-sub reveal reveal-delay-3">A lightweight Odoo 19 module that enforces date formats system-wide — ensuring consistency across all views, reports, and user interfaces.</p>
+        <div class="hero-cta-row reveal reveal-delay-4">
+          <a href="#demo_video_link" target="_blank" class="btn-primary-cta">
+            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            Watch Demo
+          </a>
+          <a href="#contact_support" class="btn-ghost-cta">Get Support</a>
+        </div>
+        <div class="hero-metrics reveal reveal-delay-3">
+        </div>
+      </div>
+
+      <div class="col-lg-5 reveal reveal-delay-2">
+        <div class="hero-info-panel">
+          <span class="info-panel-badge">Module Details</span>
+          <ul class="hero-list">
+            <li id="right_side_content_version"></li>
+            <li><span class="check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></span> Works across all views: list, form, reports</li>
+            <li><span class="check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></span> Multi-language support included</li>
+            <li><span class="check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></span> No coding or technical setup required</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="section-block tinted">
+  <div class="container text-center">
+    <div class="row justify-content-center mb-5">
+      <div class="col-lg-7 reveal">
+        <div class="section-eyebrow justify-content-center">How it works</div> <div class="section-eyebrow"></div>
+        <h2 class="section-title" id="section_title">Install once.<br>Dates formatted everywhere.</h2>
+        <p class="section-copy" id="sub_description">The module overrides Odoo's default date and datetime format strings globally, so every field, report, and widget automatically respects New Date Format.</p>
+      </div>
+    </div>
+    <div class="row g-4 justify-content-center" id="module_steps_section">
+    
+    </div>
+      
+  </div>
+</section>
+
+<section class="section-block">
+  <div class="container text-center">
+    <div class="row justify-content-center mb-5">
+      <div class="col-lg-7 reveal">
+        <div class="section-eyebrow justify-content-center">Product Demo</div> <div class="section-eyebrow"></div>
+        <h2 class="section-title" id="demo_heading">See the format change in action.</h2>
+        <p class="section-copy" id="demo_description">A short product demo showing how dates and datetimes appear across Odoo after installing the module.</p>
+      </div>
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-xl-9 reveal reveal-delay-1" id="demo_video_link">
+          <!-- <iframe 
+        
+        width="100%"
+        height="500"
+        src="https://www.youtube.com/embed/Ku35IBlgj0Q"
+        title="YouTube video player"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen
+        style="
+            border-radius: 20px;
+            border: none;
+            position: relative;
+        ">
+    </iframe> -->
+          <!-- <div class="video-overlay">
+            <span class="play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
+          </div> -->
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-block tinted">
+  <div class="container text-center">
+    <div class="row justify-content-center mb-5">
+      <div class="col-lg-7 reveal">
+        <div class="section-eyebrow justify-content-center">Core capabilities</div> <div class="section-eyebrow"></div>
+        <h2 class="section-title">Key Features</h2>
+        <p class="section-copy" id="feature_main_description">Designed to enforce consistent, readable date formatting across your entire Odoo instance with zero effort.</p>
+      </div>
+    </div>
+    <div class="row g-4 justify-content-center"  id="features_listing_section">
+      
+    </div>
+  </div>
+</section>
+
+<section class="section-block">
+  <div class="container text-center">
+    <div class="row justify-content-center mb-5">
+      <div class="col-lg-7 reveal">
+        <div class="section-eyebrow justify-content-center">Visual Walkthrough</div> <div class="section-eyebrow"></div>
+        <h2 class="section-title">Screenshots</h2>
+        <p class="section-copy" id="screenshot_description">A step-by-step view of how date formatting appears inside Odoo after installation.</p>
+      </div>
+    </div>
+    <div class="row g-4 justify-content-center">
+      <div class="col-12 col-lg-9 reveal reveal-delay-1" id="screenshot_section">
+        
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- <section class="section-block warm">
+  <div class="container text-center">
+    <div class="row justify-content-center mb-5">
+      <div class="col-lg-7 reveal">
+        <div class="section-eyebrow justify-content-center">Release history</div> <div class="section-eyebrow"></div>
+        <h2 class="section-title">Release notes</h2>
+      </div>
+    </div>
+    <div class="row g-4 justify-content-center">
+      <div class="col-md-5 reveal reveal-delay-1">
+        <div class="release-card latest">
+          <span class="release-badge">Latest update</span>
+          <div class="release-version">19.0.1.0</div>
+          <p>First public version of the module with full date format support for Odoo 19.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section> -->
+
+<section class="section-block tinted">
+  <div class="container text-center">
+    <div class="row justify-content-center mb-5">
+      <div class="col-lg-7 reveal">
+        <div class="section-eyebrow justify-content-center">More from Botspot</div> <div class="section-eyebrow"></div>
+        <h2 class="section-title">Related modules</h2>
+        <p class="section-copy">Explore other business-focused Odoo solutions from the same team.</p>
+      </div>
+    </div>
+    <div class="row row-cols-2 row-cols-md-3 row-cols-xl-4 g-4 justify-content-center">
+      <div class="col reveal reveal-delay-1"><a href="https://apps.odoo.com/apps/modules/15.0/bsi_sales_auto_round_off/" target="_blank" class="module-card"><img src="images/Suggested_Products/bsi_sales_auto_round_off.png" alt="Sales Auto Round Off"></a></div>
+      <div class="col reveal reveal-delay-2"><a href="https://apps.odoo.com/apps/modules/15.0/bsi_inventory_advance_filter/" target="_blank" class="module-card"><img src="images/Suggested_Products/bsi_inventory_advance_filter.png" alt="Inventory Advance Filter"></a></div>
+      <div class="col reveal reveal-delay-3"><a href="https://apps.odoo.com/apps/modules/15.0/bsi_multiple_discount/" target="_blank" class="module-card"><img src="images/Suggested_Products/bsi_multiple_discount.png" alt="Multiple Discount"></a></div>
+      <div class="col reveal reveal-delay-4"><a href="https://apps.odoo.com/apps/modules/15.0/bsi_net_gross_weight_on_all/" target="_blank" class="module-card"><img src="images/Suggested_Products/bsi_net_gross_weight_on_all.png" alt="Net Gross Weight"></a></div>
+      <div class="col reveal reveal-delay-1"><a href="https://apps.odoo.com/apps/modules/15.0/bsi_odoo_global_data_finder/" target="_blank" class="module-card"><img src="images/Suggested_Products/bsi_odoo_global_data_finder.png" alt="Global Data Finder"></a></div>
+      <div class="col reveal reveal-delay-2"><a href="https://apps.odoo.com/apps/modules/15.0/bsi_single_bill_from_multi_purchase_orders/" target="_blank" class="module-card"><img src="images/Suggested_Products/bsi_single_bill_from_multi_purchase_orders.png" alt="Single Bill Multi PO"></a></div>
+      <div class="col reveal reveal-delay-3"><a href="https://apps.odoo.com/apps/modules/15.0/bsi_single_inv_from_multi_orders/" target="_blank" class="module-card"><img src="images/Suggested_Products/bsi_single_inv_from_multi_orders.png" alt="Single Invoice Multi Orders"></a></div>
+      <div class="col reveal reveal-delay-4"><a href="https://apps.odoo.com/apps/modules/15.0/bsi_voice_command/" target="_blank" class="module-card"><img src="images/Suggested_Products/bsi_voice_command.png" alt="Voice Command"></a></div>
+      <div class="col reveal reveal-delay-1"><a href="https://apps.odoo.com/apps/modules/15.0/bsi_real_estate_mng/" target="_blank" class="module-card"><img src="images/Suggested_Products/bsi_real_estate_mng.png" alt="Real Estate Management"></a></div>
+      <div class="col reveal reveal-delay-2"><a href="https://apps.odoo.com/apps/modules/15.0/bsi_payment_method/" target="_blank" class="module-card"><img src="images/Suggested_Products/bsi_payment_method.png" alt="Payment Method"></a></div>
+      <div class="col reveal reveal-delay-3"><a href="https://apps.odoo.com/apps/modules/15.0/bsi_shipping_overview/" target="_blank" class="module-card"><img src="images/Suggested_Products/bsi_shipping_overview.png" alt="Shipping Overview"></a></div>
+      <div class="col reveal reveal-delay-4"><a href="https://apps.odoo.com/apps/modules/15.0/bsi_google_map/" target="_blank" class="module-card"><img src="images/Suggested_Products/bsi_google_map.png" alt="Google Map"></a></div>
+    </div>
+  </div>
+</section>
+
+<section class="section-block">
+  <div class="container text-center">
+    <div class="row justify-content-center mb-5">
+      <div class="col-lg-7 reveal">
+        <div class="section-eyebrow justify-content-center">International use</div> <div class="section-eyebrow"></div>
+        <h2 class="section-title">Multi-language support</h2>
+        <p class="section-copy">English, German, Arabic, Spanish, French, and Chinese (Simplified).</p>
+      </div>
+    </div>
+    <div class="row row-cols-2 row-cols-md-3 row-cols-xl-6 g-3 justify-content-center mb-4">
+      <div class="col reveal reveal-delay-1"><div class="language-card"><div class="flag-wrap"><img src="assets/icons/eng.png" alt="English"></div><span>English</span></div></div>
+      <div class="col reveal reveal-delay-2"><div class="language-card"><div class="flag-wrap"><img src="assets/icons/german.png" alt="German"></div><span>German</span></div></div>
+      <div class="col reveal reveal-delay-3"><div class="language-card"><div class="flag-wrap"><img src="assets/icons/aarab.png" alt="Arabic"></div><span>Arabic</span></div></div>
+      <div class="col reveal reveal-delay-4"><div class="language-card"><div class="flag-wrap"><img src="assets/icons/spanish.jpg" alt="Spanish"></div><span>Spanish</span></div></div>
+      <div class="col reveal reveal-delay-5"><div class="language-card"><div class="flag-wrap"><img src="assets/icons/french.png" alt="French"></div><span>French</span></div></div>
+      <div class="col reveal reveal-delay-6"><div class="language-card"><div class="flag-wrap"><img src="assets/icons/chinese.png" alt="Chinese"></div><span>Chinese</span></div></div>
+    </div>
+    <div class="row justify-content-center reveal">
+      <div class="col-lg-8">
+        <div class="language-note">
+          Translations are powered by Google Translate and may not be fully accurate. We welcome corrections at <a href="mailto:contact@botspotinfoware.com">contact@botspotinfoware.com</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-block tinted">
+  <div class="container text-center">
+    <div class="row justify-content-center mb-5">
+      <div class="col-lg-7 reveal">
+        <div class="section-eyebrow justify-content-center">Business services</div> <div class="section-eyebrow"></div>
+        <h2 class="section-title">Services</h2>
+      </div>
+    </div>
+    <div class="row row-cols-2 row-cols-md-3 row-cols-xl-5 g-3 justify-content-center">
+      <div class="col reveal reveal-delay-1"><div class="service-card"><div class="service-icon-wrap"><img src="assets/icons/puzzle1.png" alt=""></div><h6>Integration</h6></div></div>
+      <div class="col reveal reveal-delay-2"><div class="service-card"><div class="service-icon-wrap"><img src="assets/icons/wip_1.png" alt=""></div><h6>Migration</h6></div></div>
+      <div class="col reveal reveal-delay-3"><div class="service-card"><div class="service-icon-wrap"><img src="assets/icons/presentation_1.png" alt=""></div><h6>Training</h6></div></div>
+      <div class="col reveal reveal-delay-4"><div class="service-card"><div class="service-icon-wrap"><img src="assets/icons/wip_2.png" alt=""></div><h6>Customization</h6></div></div>
+      <div class="col reveal reveal-delay-5"><div class="service-card"><div class="service-icon-wrap"><img src="assets/icons/conversation_1.png" alt=""></div><h6>Consulting</h6></div></div>
+      <div class="col reveal reveal-delay-1"><div class="service-card"><div class="service-icon-wrap"><img src="assets/icons/lifeguard_1.png" alt=""></div><h6>Support &amp; Maintenance</h6></div></div>
+      <div class="col reveal reveal-delay-2"><div class="service-card"><div class="service-icon-wrap"><img src="assets/icons/working_1.png" alt=""></div><h6>Implementation</h6></div></div>
+      <div class="col reveal reveal-delay-3"><div class="service-card"><div class="service-icon-wrap"><img src="assets/icons/man_1.png" alt=""></div><h6>Hire Developer</h6></div></div>
+      <div class="col reveal reveal-delay-4"><div class="service-card"><div class="service-icon-wrap"><img src="assets/icons/technical-suppor_1.png" alt=""></div><h6>Web Services</h6></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="section-block">
+  <div class="container text-center">
+    <div class="row justify-content-center mb-5">
+      <div class="col-lg-7 reveal">
+        <div class="section-eyebrow justify-content-center" id="contact_support">Contact</div> <div class="section-eyebrow"></div>
+        <h2 class="section-title">Support</h2>
+        <p class="section-copy">Need help with setup, usage, or customization? The Botspot team is available.</p>
+      </div>
+    </div>
+    <div class="row g-4 justify-content-center">
+      <div class="col-md-5 reveal reveal-delay-1">
+        <div class="support-card">
+          <div class="support-icon-wrap"><img src="assets/icons/website.png" alt="Website"></div>
+          <div class="text-start">
+            <div class="support-label">Website</div>
+            <div class="support-value"><a href="https://www.botspotinfoware.com/" target="_blank" id="company_website">botspotinfoware.com</a></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-5 reveal reveal-delay-2">
+        <div class="support-card">
+          <div class="support-icon-wrap"><img src="assets/icons/support.png" alt="Email"></div>
+          <div class="text-start">
+            <div class="support-label">Email</div>
+            <div class="support-value"><a href="mailto:contact@botspotinfoware.com" id="company_email">contact@botspotinfoware.com</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-sm-6 footer-brand">
+        <strong>Botspot Infoware</strong>
+        <small>Odoo Business Solutions</small>
+      </div>
+      <div class="col-sm-6 footer-copy">
+        &copy; 2024 Botspot Infoware. All rights reserved.
+      </div>
+    </div>
+    <hr class="footer-divider">
+    <p class="footer-tagline">Date &amp; Datetime Format for Odoo · Version 19.0.1.0</p>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  const topbar = document.getElementById('topbar');
+  window.addEventListener('scroll', () => {
+    topbar.classList.toggle('scrolled', window.scrollY > 10);
+  }, { passive: true });
+
+  const revealEls = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  revealEls.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
