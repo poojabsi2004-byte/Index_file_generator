@@ -17,67 +17,143 @@
         <field name="name">bsi.index.file.generator.form.view</field>
         <field name="model">index.file.generator</field>
         <field name="arch" type="xml">
-            <form>
+            <form class="bsi_index_generator_form">
                 <header>
-                    <button name="action_generate_html" type="object" string="Generate HTML" class="btn-primary"/>
+                    <button name="action_generate_html" type="object" string="Generate Preview" class="btn-primary"/>
+                    <button name="action_download_html" type="object" string="Download HTML" class="btn-secondary" invisible="not generated_file"/>
+                    <button name="action_hide_preview" type="object" string="Hide Preview" class="btn-secondary" invisible="not show_preview"/>
+                    <button name="action_show_preview" type="object" string="Show Preview" class="btn-secondary" invisible="show_preview"/>
                 </header>
                 <sheet>
-                    <group>
-                        <field name="generated_filename" />
-                        <field name="template_file" />
-                    </group>
-                    <group>
-                        <group string="Comapny Details" class="text-muted">
-                            <field name="company_name" />
-                            <!-- <field name="company_email" /> -->
-                            <field name="version" />
-                            <field name="main_header" />
-                            <!-- <field name="website" /> -->
-                            <field name="main_des" />
-                        </group>
-                        <group string="Module Information" class="text-muted">
-                            <field name="demo_video_link" />
-                            <field name="demo_heading" />
-                            <field name="demo_des" />
-                        </group>
-                    </group>
+                    <field name="generated_file" invisible="1"/>
+                    <field name="template_file" invisible="1"/>
+                    <field name="show_preview" invisible="1"/>
+                    <div class="row g-3">
+                        <div class="col-12 col-xl-5 bsi_editor_panel">
+                            <div style="display: flex; flex-direction: column; gap: 16px;">
+                                <div style="border: 1px solid #d8dadd; border-radius: 8px; background: #fff; padding: 16px;">
+                                    <div style="font-weight: 600; color: #374151; margin-bottom: 12px; text-transform: uppercase; font-size: 12px;">Template Setup</div>
+                                    <group col="2">
+                                        <field name="template_attachment_ids" widget="many2many_binary" colspan="2"/>
+                                        <field name="module_logo" widget="image" options="{'size': [96, 96]}" class="oe_avatar"/>
+                                    </group>
+                                </div>
 
-                    <notebook>
-                        <page name="Module steps" string="Module Steps">
-                            <group>
-                                <field name="sub_heading" />
-                                <field name="sub_des" />
-                            </group>
-                            <field name="module_steps">
-                                <list editable="bottom">
-                                    <field name="module_step_icon" />
-                                    <field name="module_step_heading" />
-                                    <field name="module_step_des" />
-                                </list>
-                            </field>
-                        </page>
+                                <div style="border: 1px solid #d8dadd; border-radius: 8px; background: #fff; padding: 16px;">
+                                    <div style="font-weight: 600; color: #374151; margin-bottom: 12px; text-transform: uppercase; font-size: 12px;">Hero Section</div>
+                                    <group col="2">
+                                        <field name="company_name" class="bsi_wrap_field"/>
+                                        <field name="version" class="bsi_wrap_field"/>
+                                        <field name="topbar_text" colspan="2" class="bsi_wrap_field"/>
+                                        <field name="main_header" colspan="2" class="bsi_wrap_field"/>
+                                        <field name="main_des" colspan="2" class="bsi_wrap_field"/>
+                                        <field name="primary_cta_label" class="bsi_wrap_field"/>
+                                        <field name="secondary_cta_label" class="bsi_wrap_field"/>
+                                    </group>
+                                </div>
 
-                        <page name="Features" string="Features">
-                            <group>
-                                <field name="feature_main_des" string="Feature Description" />
-                            </group>
-                            <field name="feature_ids">
-                                <list editable="bottom">
-                                    <field name="feature_heading" />
-                                    <field name="feature_des" />
-                                    <field name="feature_icon" string="Icon" />
-                                </list>
-                            </field>
-                            
-                        </page>
+                                <div style="border: 1px solid #d8dadd; border-radius: 8px; background: #fff; padding: 16px;">
+                                    <div style="font-weight: 600; color: #374151; margin-bottom: 12px; text-transform: uppercase; font-size: 12px;">SEO &amp; Branding</div>
+                                    <group col="2">
+                                        <field name="seo_title" colspan="2" class="bsi_wrap_field"/>
+                                        <field name="seo_description" colspan="2" class="bsi_wrap_field"/>
+                                        <field name="accent_color" widget="color"/>
+                                        <field name="gold_color" widget="color"/>
+                                        <field name="footer_tagline" colspan="2" class="bsi_wrap_field"/>
+                                        <field name="copyright_year"/>
+                                    </group>
+                                </div>
 
-                        <page name="Screenshots" string="Screenshots">
-                            <group>
-                                <field name="ss_des" />
-                                <field name="screenshot_attachment_ids" widget="many2many_binary" />
-                            </group>
-                        </page>
-                    </notebook>
+                                <div style="border: 1px solid #d8dadd; border-radius: 8px; background: #fff; padding: 16px;">
+                                    <div style="font-weight: 600; color: #374151; margin-bottom: 12px; text-transform: uppercase; font-size: 12px;">Module Details Section</div>
+                                    <group col="2">
+                                        <field name="sub_heading" class="bsi_wrap_field"/>
+                                        <field name="sub_des" class="bsi_wrap_field"/>
+                                    </group>
+                                </div>
+
+                                <div style="border: 1px solid #d8dadd; border-radius: 8px; background: #fff; padding: 16px;">
+                                    <div style="font-weight: 600; color: #374151; margin-bottom: 12px; text-transform: uppercase; font-size: 12px;">Demo Section</div>
+                                    <group col="2">
+                                        <field name="demo_video_link" colspan="2" class="bsi_wrap_field"/>
+                                        <field name="demo_heading" class="bsi_wrap_field"/>
+                                        <field name="demo_des" class="bsi_wrap_field"/>
+                                    </group>
+                                </div>
+
+                                <div style="border: 1px solid #d8dadd; border-radius: 8px; background: #fff; padding: 16px;">
+                                    <div style="font-weight: 600; color: #374151; margin-bottom: 12px; text-transform: uppercase; font-size: 12px;">Support &amp; Section Controls</div>
+                                    <group col="2">
+                                        <field name="website" colspan="2" class="bsi_wrap_field"/>
+                                        <field name="company_email" colspan="2" class="bsi_wrap_field"/>
+                                        <field name="auto_hide_empty_sections"/>
+                                    </group>
+                                    <group col="4">
+                                        <field name="hide_steps_section"/>
+                                        <field name="hide_demo_section"/>
+                                        <field name="hide_features_section"/>
+                                        <field name="hide_screenshots_section"/>
+                                        <field name="hide_related_modules_section"/>
+                                        <field name="hide_languages_section"/>
+                                        <field name="hide_services_section"/>
+                                        <field name="hide_support_section"/>
+                                    </group>
+                                </div>
+
+                                <notebook>
+                                    <page name="Module steps" string="Module Steps">
+                                        <field name="module_steps">
+                                            <list editable="bottom">
+                                                <field name="module_step_icon" widget="image"/>
+                                                <field name="module_step_heading" class="bsi_wrap_field"/>
+                                                <field name="module_step_des" class="bsi_wrap_field"/>
+                                            </list>
+                                        </field>
+                                    </page>
+
+                                    <page name="Features" string="Features">
+                                        <group>
+                                            <field name="feature_main_des" string="Feature Description" class="bsi_wrap_field"/>
+                                        </group>
+                                        <field name="feature_ids">
+                                            <list editable="bottom">
+                                                <field name="feature_title" string="Title"/>
+                                                <field name="feature_heading" class="bsi_wrap_field"/>
+                                                <field name="feature_des" class="bsi_wrap_field"/>
+                                            </list>
+                                        </field>
+                                    </page>
+
+                                    <page name="Screenshots" string="Screenshots">
+                                        <field name="screenshot_ids">
+                                            <list editable="bottom">
+                                                <field name="ss_title" class="bsi_wrap_field"/>
+                                                <field name="ss_heading" class="bsi_wrap_field"/>
+                                                <field name="ss_des" class="bsi_wrap_field"/>
+                                                <field name="ss_image" class="bsi_wrap_field" widget="image"/>
+                                            </list>
+                                        </field>
+                                    </page>
+                                </notebook>
+                            </div>
+                        </div>
+                        <div class="col-12 col-xl-7 bsi_preview_panel" invisible="not show_preview">
+                            <div style="position: sticky; top: 8px; border: 1px solid #d8dadd; border-radius: 8px; background: #fff; padding: 12px;">
+                                <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 10px;">
+                                    <div style="font-weight: 600; color: #374151; text-transform: uppercase; font-size: 12px;">HTML Preview</div>
+                                    <div style="color: #6b7280; font-size: 12px;">Generated page</div>
+                                </div>
+                                <div class="bsi_preview_frame_wrap">
+                                    <button name="action_open_preview"
+                                            type="object"
+                                            string="Open Preview"
+                                            class="btn btn-primary bsi_preview_open_btn"
+                                            invisible="not generated_file"/>
+                                    <field name="preview_html" widget="html" nolabel="1" readonly="1"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </sheet>
             </form>
         </field>
