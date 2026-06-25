@@ -1,0 +1,46 @@
+// BSI Dynamic Index Generator — backend form styles
+
+.bsi_index_generator_form {
+
+    // Give the editor and preview panels a comfortable max-height on large screens
+    .bsi_editor_panel {
+        max-height: 90vh;
+        overflow-y: auto;
+        padding-right: 4px;
+
+        // Subtle scrollbar styling (webkit)
+        &::-webkit-scrollbar            { width: 4px; }
+        &::-webkit-scrollbar-track      { background: #f1f1f1; border-radius: 4px; }
+        &::-webkit-scrollbar-thumb      { background: #c9b8cc; border-radius: 4px; }
+        &::-webkit-scrollbar-thumb:hover{ background: #875a7b; }
+    }
+
+    .bsi_preview_panel {
+        // Preview panel sticks to viewport top when scrolling the form
+        .bsi_preview_frame_wrap {
+            position: relative;
+
+            // "Open Preview" floating button overlaid top-right of the iframe
+            .bsi_preview_open_btn {
+                position: absolute;
+                top: 8px;
+                right: 8px;
+                z-index: 10;
+                font-size: 12px;
+                padding: 4px 12px;
+            }
+        }
+    }
+
+    // Wrap long text inside list cells and form fields
+    .bsi_wrap_field {
+        white-space: normal;
+        word-break: break-word;
+        overflow-wrap: break-word;
+    }
+
+    // Compact section dividers inside the editor panel
+    .o_group {
+        margin-bottom: 0;
+    }
+}

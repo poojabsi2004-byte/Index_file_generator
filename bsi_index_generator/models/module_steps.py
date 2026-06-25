@@ -1,11 +1,13 @@
-from odoo import fields, models, api
+# -*- coding: utf-8 -*-
+from odoo import fields, models
 
-class ModuleFeatures(models.Model):
-    _name = 'module.steps'
-    _description = "Module Steps"
-    _rec_name = "module_step_heading"
-    
-    module_step_icon = fields.Binary(string="steps")
-    module_step_heading = fields.Char(string="Module step wise Heading")
-    module_step_des = fields.Char(string="Module step wise Desciption")
-    generator_id = fields.Many2one('index.file.generator', string="Generator")
+class BsiModuleStep(models.Model):
+    _name = 'bsi.module.step'
+    _description = 'Module Step'
+    _rec_name = 'step_heading'
+    _order = 'sequence, id'
+
+    sequence = fields.Integer(default=10)
+    step_heading = fields.Char(string='Heading', required=True)
+    step_description = fields.Text(string='Description')
+    generator_id = fields.Many2one('bsi.index.generator', string='Generator', ondelete='cascade')

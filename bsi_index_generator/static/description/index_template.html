@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
 </head>
 
-<body style="font-family: 'Montserrat', sans-serif; background-color: #faf5ff; color: #1a1025;">
+<body style="font-family: 'Montserrat', sans-serif; color: #1a1025;">
 
 <!-- HEADER -->
 <div class="container-fluid py-5" style="border-bottom: 1.5px solid #d4b8cc;">
@@ -36,7 +36,7 @@
 </div>
 
 <!-- TAB NAV -->
-<div class="container-fluid py-3" style="border-bottom: 1.5px solid #e0ceda; position: sticky; top: 0; z-index: 100; background-color: #faf5ff;">
+<div class="container-fluid py-3" style="border-bottom: 1.5px solid #e0ceda; position: sticky; top: 0; z-index: 100;">
     <ul class="nav nav-pills justify-content-center flex-wrap flex-md-nowrap" id="bsiTabs" role="tablist" style="padding-bottom: 0;">
         <li class="nav-item col-6 col-md-auto px-1 mb-2 mb-md-0" role="presentation">
             <a class="nav-link active" id="overview-tab" data-bs-toggle="pill" data-bs-target="#bsi-overview" role="tab" style="display: block; text-align: center; color: #000; border-radius: 50px; padding: 9px 16px; font-weight: 600; font-size: 14px; border: 1.5px solid #875A7B; white-space: nowrap; cursor: pointer;">Overview</a>
@@ -60,29 +60,29 @@
     <div class="tab-pane fade show active" id="bsi-overview" role="tabpanel">
 
         <!-- Why Choose -->
-        <div id="why_choose_section" class="container py-5">
+        <div class="container py-5">
             <div class="row justify-content-center">
                 <div class="col-lg-10">
-                    <div style="background-color: #f8f4f7; border: 1.5px solid #e0ceda; border-radius: 14px; padding: 36px;">
+                    <div style="background-color: #f1f1f1; border: 1.5px solid #e0ceda; border-radius: 14px; padding: 36px;">
                         <div style="font-size: 10px; font-weight: 800; letter-spacing: .18em; text-transform: uppercase; color: #a57295; margin-bottom: 10px;">Why choose this module</div>
                         <h2 id="section_title" style="font-size: clamp(20px,3vw,30px); font-weight: 800; color: #1a1025; letter-spacing: -.02em; line-height: 1.2; margin-bottom: 14px;">Why Customers Choose This Module</h2>
                         <p id="sub_description" style="font-size: 14px; color: #3d2e3a; line-height: 1.8; margin-bottom: 10px;">First paragraph about the module's value proposition.</p>
                         <p id="sub_description_2" style="font-size: 14px; color: #3d2e3a; line-height: 1.8; margin-bottom: 28px;">Second paragraph with more detail about the solution.</p>
-                        <div id="stats_section" class="row g-3">
+                        <div class="row g-3">
                             <div class="col-md-4">
-                                <div class="text-center" style="background-color: #fdf8ff; border: 2px solid #875A7B; border-radius: 18px; box-shadow: 0 4px 16px #d4b8cc; padding: 20px 12px;">
+                                <div class="text-center" style="background-color: #fdf8ff; border: 2px solid #875A7B; border-radius: 18px; padding: 20px 12px;">
                                     <div id="stat_1_value" style="font-size: 26px; font-weight: 900; color: #875A7B; line-height: 1;">—</div>
                                     <div id="stat_1_label" style="font-size: 10px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: #7a6b76; margin-top: 5px;">Stat Label</div>
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                <div class="text-center" style="background-color: #fdf8ff; border: 2px solid #875A7B; border-radius: 18px; box-shadow: 0 4px 16px #d4b8cc; padding: 20px 12px;">
+                                <div class="text-center" style="background-color: #fdf8ff; border: 2px solid #875A7B; border-radius: 18px; padding: 20px 12px;">
                                     <div id="stat_2_value" style="font-size: 26px; font-weight: 900; color: #875A7B; line-height: 1;">—</div>
                                     <div id="stat_2_label" style="font-size: 10px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: #7a6b76; margin-top: 5px;">Stat Label</div>
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                <div class="text-center" style="background-color: #fdf8ff; border: 2px solid #875A7B; border-radius: 18px; box-shadow: 0 4px 16px #d4b8cc; padding: 20px 12px;">
+                                <div class="text-center" style="background-color: #fdf8ff; border: 2px solid #875A7B; border-radius: 18px; padding: 20px 12px;">
                                     <div id="stat_3_value" style="font-size: 26px; font-weight: 900; color: #875A7B; line-height: 1;">—</div>
                                     <div id="stat_3_label" style="font-size: 10px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: #7a6b76; margin-top: 5px;">Stat Label</div>
                                 </div>
@@ -104,7 +104,7 @@
             <div id="module_steps_section" class="row g-3"></div>
         </div>
 
-        <!-- Multi-Language Support — pills populated dynamically by generator -->
+        <!-- Multi-Language Support — STATIC, not made dynamic per design decision -->
         <div id="multilanguage_section" class="container pb-5">
             <div class="row justify-content-center mb-3">
                 <div class="col-lg-10 text-center">
@@ -128,7 +128,7 @@
             </div>
             <div class="row g-3">
                 <div class="col-md-3 col-6">
-                    <div class="text-center h-100" style="background-color: #ffffff; border: 1.5px solid #e0ceda; border-radius: 14px; padding: 28px 16px 24px; box-shadow: 0 2px 8px #ede0ec;">
+                    <div class="text-center h-100" style="background-color: #ffffff; border: 1.5px solid #e0ceda; border-radius: 14px; padding: 28px 16px 24px;">
                         <div style="width: 68px; height: 68px; background-color: #ddd8e4; border-radius: 14px; margin: 0 auto 16px; padding: 14px;">
                             <img src="assets/icons/training-program.png" alt="Odoo Training" width="40" height="40" style="display: block;">
                         </div>
@@ -136,7 +136,7 @@
                     </div>
                 </div>
                 <div class="col-md-3 col-6">
-                    <div class="text-center h-100" style="background-color: #ffffff; border: 1.5px solid #e0ceda; border-radius: 14px; padding: 28px 16px 24px; box-shadow: 0 2px 8px #ede0ec;">
+                    <div class="text-center h-100" style="background-color: #ffffff; border: 1.5px solid #e0ceda; border-radius: 14px; padding: 28px 16px 24px;">
                         <div style="width: 68px; height: 68px; background-color: #ddd8e4; border-radius: 14px; margin: 0 auto 16px; padding: 14px;">
                             <img src="assets/icons/Consultant.png" alt="Consultation" width="40" height="40" style="display: block;">
                         </div>
@@ -144,7 +144,7 @@
                     </div>
                 </div>
                 <div class="col-md-3 col-6">
-                    <div class="text-center h-100" style="background-color: #ffffff; border: 1.5px solid #e0ceda; border-radius: 14px; padding: 28px 16px 24px; box-shadow: 0 2px 8px #ede0ec;">
+                    <div class="text-center h-100" style="background-color: #ffffff; border: 1.5px solid #e0ceda; border-radius: 14px; padding: 28px 16px 24px;">
                         <div style="width: 68px; height: 68px; background-color: #ddd8e4; border-radius: 14px; margin: 0 auto 16px; padding: 14px;">
                             <img src="assets/icons/Custom_development.png" alt="Custom Development" width="40" height="40" style="display: block;">
                         </div>
@@ -152,7 +152,7 @@
                     </div>
                 </div>
                 <div class="col-md-3 col-6">
-                    <div class="text-center h-100" style="background-color: #ffffff; border: 1.5px solid #e0ceda; border-radius: 14px; padding: 28px 16px 24px; box-shadow: 0 2px 8px #ede0ec;">
+                    <div class="text-center h-100" style="background-color: #ffffff; border: 1.5px solid #e0ceda; border-radius: 14px; padding: 28px 16px 24px;">
                         <div style="width: 68px; height: 68px; background-color: #ddd8e4; border-radius: 14px; margin: 0 auto 16px; padding: 14px;">
                             <img src="assets/icons/Migration.png" alt="Migration" width="40" height="40" style="display: block;">
                         </div>
@@ -160,7 +160,7 @@
                     </div>
                 </div>
                 <div class="col-md-3 col-6">
-                    <div class="text-center h-100" style="background-color: #ffffff; border: 1.5px solid #e0ceda; border-radius: 14px; padding: 28px 16px 24px; box-shadow: 0 2px 8px #ede0ec;">
+                    <div class="text-center h-100" style="background-color: #ffffff; border: 1.5px solid #e0ceda; border-radius: 14px; padding: 28px 16px 24px;">
                         <div style="width: 68px; height: 68px; background-color: #ddd8e4; border-radius: 14px; margin: 0 auto 16px; padding: 14px;">
                             <img src="assets/icons/technical-support.png" alt="Technical Support" width="40" height="40" style="display: block;">
                         </div>
@@ -168,7 +168,7 @@
                     </div>
                 </div>
                 <div class="col-md-3 col-6">
-                    <div class="text-center h-100" style="background-color: #ffffff; border: 1.5px solid #e0ceda; border-radius: 14px; padding: 28px 16px 24px; box-shadow: 0 2px 8px #ede0ec;">
+                    <div class="text-center h-100" style="background-color: #ffffff; border: 1.5px solid #e0ceda; border-radius: 14px; padding: 28px 16px 24px;">
                         <div style="width: 68px; height: 68px; background-color: #ddd8e4; border-radius: 14px; margin: 0 auto 16px; padding: 14px;">
                             <img src="assets/icons/implementation.png" alt="Implementation" width="40" height="40" style="display: block;">
                         </div>
@@ -176,7 +176,7 @@
                     </div>
                 </div>
                 <div class="col-md-3 col-6">
-                    <div class="text-center h-100" style="background-color: #ffffff; border: 1.5px solid #e0ceda; border-radius: 14px; padding: 28px 16px 24px; box-shadow: 0 2px 8px #ede0ec;">
+                    <div class="text-center h-100" style="background-color: #ffffff; border: 1.5px solid #e0ceda; border-radius: 14px; padding: 28px 16px 24px;">
                         <div style="width: 68px; height: 68px; background-color: #ddd8e4; border-radius: 14px; margin: 0 auto 16px; padding: 14px;">
                             <img src="assets/icons/integration.png" alt="Integration" width="40" height="40" style="display: block;">
                         </div>
@@ -184,7 +184,7 @@
                     </div>
                 </div>
                 <div class="col-md-3 col-6">
-                    <div class="text-center h-100" style="background-color: #ffffff; border: 1.5px solid #e0ceda; border-radius: 14px; padding: 28px 16px 24px; box-shadow: 0 2px 8px #ede0ec;">
+                    <div class="text-center h-100" style="background-color: #ffffff; border: 1.5px solid #e0ceda; border-radius: 14px; padding: 28px 16px 24px;">
                         <div style="width: 68px; height: 68px; background-color: #ddd8e4; border-radius: 14px; margin: 0 auto 16px; padding: 14px;">
                             <img src="assets/icons/hire_developer.png" alt="Hire Developer" width="40" height="40" style="display: block;">
                         </div>
@@ -205,7 +205,7 @@
             </div>
             <div class="row g-3">
                 <div class="col-md-3 col-sm-6">
-                    <div class="d-flex align-items-start gap-3 h-100" style="background-color: #ffffff; border: 1.5px solid #e0ceda; border-radius: 14px; box-shadow: 0 2px 8px #ede0ec; padding: 18px;">
+                    <div class="d-flex align-items-start gap-3 h-100" style="background-color: #ffffff; border: 1.5px solid #e0ceda; border-radius: 14px; padding: 18px;">
                         <div style="width: 48px; height: 48px; background-color: #ddd8e4; border-radius: 10px; padding: 10px; flex-shrink: 0;">
                             <img src="assets/icons/email.png" alt="Email" width="28" height="28" style="display: block;">
                         </div>
@@ -216,7 +216,7 @@
                     </div>
                 </div>
                 <div class="col-md-3 col-sm-6">
-                    <div class="d-flex align-items-start gap-3 h-100" style="background-color: #ffffff; border: 1.5px solid #e0ceda; border-radius: 14px; box-shadow: 0 2px 8px #ede0ec; padding: 18px;">
+                    <div class="d-flex align-items-start gap-3 h-100" style="background-color: #ffffff; border: 1.5px solid #e0ceda; border-radius: 14px; padding: 18px;">
                         <div style="width: 48px; height: 48px; background-color: #ddd8e4; border-radius: 10px; padding: 10px; flex-shrink: 0;">
                             <img src="assets/icons/website.png" alt="Website" width="28" height="28" style="display: block;">
                         </div>
@@ -227,7 +227,7 @@
                     </div>
                 </div>
                 <div class="col-md-3 col-sm-6">
-                    <div class="d-flex align-items-start gap-3 h-100" style="background-color: #ffffff; border: 1.5px solid #e0ceda; border-radius: 14px; box-shadow: 0 2px 8px #ede0ec; padding: 18px;">
+                    <div class="d-flex align-items-start gap-3 h-100" style="background-color: #ffffff; border: 1.5px solid #e0ceda; border-radius: 14px; padding: 18px;">
                         <div style="width: 48px; height: 48px; background-color: #ddd8e4; border-radius: 10px; padding: 10px; flex-shrink: 0;">
                             <img src="assets/icons/store.png" alt="Odoo Store" width="28" height="28" style="display: block;">
                         </div>
@@ -238,13 +238,13 @@
                     </div>
                 </div>
                 <div class="col-md-3 col-sm-6">
-                    <div class="d-flex align-items-start gap-3 h-100" style="background-color: #ffffff; border: 1.5px solid #e0ceda; border-radius: 14px; box-shadow: 0 2px 8px #ede0ec; padding: 18px;">
+                    <div class="d-flex align-items-start gap-3 h-100" style="background-color: #ffffff; border: 1.5px solid #e0ceda; border-radius: 14px; padding: 18px;">
                         <div style="width: 48px; height: 48px; background-color: #ddd8e4; border-radius: 10px; padding: 10px; flex-shrink: 0;">
-                            <img src="assets/icons/response_time.png" alt="Response Time" width="28" height="28" style="display: block;">
+                            <img src="assets/icons/youtube.png" alt="YouTube" width="28" height="28" style="display: block;">
                         </div>
                         <div>
-                            <div style="font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #7a6b76; margin-bottom: 3px;">Response Time</div>
-                            <div style="font-size: 12px; font-weight: 600; color: #1a1025;">Within 24 hours on business days</div>
+                            <div style="font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #7a6b76; margin-bottom: 3px;">YouTube Channel</div>
+                            <a href="https://www.youtube.com/channel/UC4CyyB4OgU2GlcGz2yu583Q" target="_blank" style="font-size: 12px; font-weight: 600; color: #875A7B; text-decoration: none;">Botspot Infoware</a>
                         </div>
                     </div>
                 </div>
@@ -328,8 +328,8 @@
                 </div>
             </div>
             <div class="d-flex align-items-center justify-content-center gap-3 mt-4">
-                <a href="#bsiRelDesk" data-bs-slide="prev" role="button" class="d-inline-flex align-items-center justify-content-center text-decoration-none flex-shrink-0" style="width: 36px; height: 36px; border-radius: 50%; background-color: #f4f0f7; border: 1.5px solid #d8c0d0; box-shadow: 0 2px 8px #cccccc; font-size: 18px; font-weight: 700; color: #875A7B; line-height: 1;">&#8249;</a>
-                <a href="#bsiRelDesk" data-bs-slide="next" role="button" class="d-inline-flex align-items-center justify-content-center text-decoration-none flex-shrink-0" style="width: 36px; height: 36px; border-radius: 50%; background-color: #f4f0f7; border: 1.5px solid #d8c0d0; box-shadow: 0 2px 8px #cccccc; font-size: 18px; font-weight: 700; color: #875A7B; line-height: 1;">&#8250;</a>
+                <a href="#bsiRelDesk" data-bs-slide="prev" role="button" class="d-inline-flex align-items-center justify-content-center text-decoration-none flex-shrink-0" style="width: 36px; height: 36px; border-radius: 50%; background-color: #f4f0f7; border: 1.5px solid #d8c0d0; font-size: 18px; font-weight: 700; color: #875A7B; line-height: 1;">&#8249;</a>
+                <a href="#bsiRelDesk" data-bs-slide="next" role="button" class="d-inline-flex align-items-center justify-content-center text-decoration-none flex-shrink-0" style="width: 36px; height: 36px; border-radius: 50%; background-color: #f4f0f7; border: 1.5px solid #d8c0d0; font-size: 18px; font-weight: 700; color: #875A7B; line-height: 1;">&#8250;</a>
             </div>
         </div>
 
@@ -341,8 +341,8 @@
                 </div>
             </div>
             <div class="d-flex align-items-center justify-content-center gap-3 mt-4">
-                <a href="#bsiRelMob" data-bs-slide="prev" role="button" class="d-inline-flex align-items-center justify-content-center text-decoration-none flex-shrink-0" style="width: 36px; height: 36px; border-radius: 50%; background-color: #f4f0f7; border: 1.5px solid #d8c0d0; box-shadow: 0 2px 8px #cccccc; font-size: 18px; font-weight: 700; color: #875A7B; line-height: 1;">&#8249;</a>
-                <a href="#bsiRelMob" data-bs-slide="next" role="button" class="d-inline-flex align-items-center justify-content-center text-decoration-none flex-shrink-0" style="width: 36px; height: 36px; border-radius: 50%; background-color: #f4f0f7; border: 1.5px solid #d8c0d0; box-shadow: 0 2px 8px #cccccc; font-size: 18px; font-weight: 700; color: #875A7B; line-height: 1;">&#8250;</a>
+                <a href="#bsiRelMob" data-bs-slide="prev" role="button" class="d-inline-flex align-items-center justify-content-center text-decoration-none flex-shrink-0" style="width: 36px; height: 36px; border-radius: 50%; background-color: #f4f0f7; border: 1.5px solid #d8c0d0; font-size: 18px; font-weight: 700; color: #875A7B; line-height: 1;">&#8249;</a>
+                <a href="#bsiRelMob" data-bs-slide="next" role="button" class="d-inline-flex align-items-center justify-content-center text-decoration-none flex-shrink-0" style="width: 36px; height: 36px; border-radius: 50%; background-color: #f4f0f7; border: 1.5px solid #d8c0d0; font-size: 18px; font-weight: 700; color: #875A7B; line-height: 1;">&#8250;</a>
             </div>
         </div>
 

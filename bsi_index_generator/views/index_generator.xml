@@ -1,171 +1,425 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <!-- ══ bsi.index.file — Template Library ══ -->
 
-    <record id="bsi_index_file_generator_list_view" model="ir.ui.view">
-        <field name="name">bsi.index.file.generator.list.view</field>
-        <field name="model">index.file.generator</field>
+    <record id="bsi_index_file_list_view" model="ir.ui.view">
+        <field name="name">bsi.index.file.list</field>
+        <field name="model">bsi.index.file</field>
         <field name="arch" type="xml">
             <list>
-                <field name="company_name" />
-                <field name="version" />
-                <field name="main_header" />
+                <field name="name"         placeholder="e.g. My Custom Template"/>
+                <field name="use_template" string="Active / Default"
+                       widget="boolean_toggle"/>
             </list>
         </field>
     </record>
 
-    <record id="bsi_index_file_generator_form_view" model="ir.ui.view">
-        <field name="name">bsi.index.file.generator.form.view</field>
-        <field name="model">index.file.generator</field>
+    <record id="bsi_index_file_form_view" model="ir.ui.view">
+        <field name="name">bsi.index.file.form</field>
+        <field name="model">bsi.index.file</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group col="2">
+                        <field name="name"         colspan="2" placeholder="e.g. My Custom Template"/>
+                        <field name="use_template" string="Set as Default Template"
+                               widget="boolean_toggle"
+                               help="Only one template can be active. Enabling this will disable the currently active template."/>
+                        <field name="template" widget="binary" filename="template_filename" colspan="2"/>
+                        <field name="template_filename" invisible="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="bsi_index_file_action" model="ir.actions.act_window">
+        <field name="name">Index Files</field>
+        <field name="res_model">bsi.index.file</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- ══ bsi.index.language — Language Library ══ -->
+
+    <record id="bsi_index_language_list_view" model="ir.ui.view">
+        <field name="name">bsi.index.language.list</field>
+        <field name="model">bsi.index.language</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="sequence" widget="handle"/>
+                <field name="name"            placeholder="e.g. English"/>
+                <field name="icon_asset_name" string="Built-in Icon" placeholder="e.g. eng.png"/>
+                <field name="icon" widget="image" options="{'size': [40, 30]}"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="bsi_index_language_form_view" model="ir.ui.view">
+        <field name="name">bsi.index.language.form</field>
+        <field name="model">bsi.index.language</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group col="2">
+                        <field name="name"            placeholder="e.g. English"/>
+                        <field name="sequence"/>
+                        <field name="icon_asset_name" placeholder="e.g. eng.png"
+                               help="Filename inside static/description/assets/icons/ (e.g. eng.png). Used when no custom icon is uploaded."/>
+                        <field name="icon" widget="image" options="{'size': [80, 60]}" colspan="2"/>
+                        <field name="icon_filename" invisible="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="bsi_index_language_action" model="ir.actions.act_window">
+        <field name="name">Languages</field>
+        <field name="res_model">bsi.index.language</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- ══ bsi.index.generator — Main Generator ══ -->
+
+    <!-- ── List View ── -->
+    <record id="bsi_index_generator_list_view" model="ir.ui.view">
+        <field name="name">bsi.index.generator.list</field>
+        <field name="model">bsi.index.generator</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="main_header" string="Module Heading"/>
+                <field name="company_name"/>
+                <field name="company_email"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ── Form View ── -->
+    <record id="bsi_index_generator_form_view" model="ir.ui.view">
+        <field name="name">bsi.index.generator.form</field>
+        <field name="model">bsi.index.generator</field>
         <field name="arch" type="xml">
             <form class="bsi_index_generator_form">
                 <header>
-                    <button name="action_generate_html" type="object" string="Generate Preview" class="btn-primary"/>
-                    <button name="action_download_html" type="object" string="Download HTML" class="btn-secondary" invisible="not generated_file"/>
-                    <button name="action_hide_preview" type="object" string="Hide Preview" class="btn-secondary" invisible="not show_preview"/>
-                    <button name="action_show_preview" type="object" string="Show Preview" class="btn-secondary" invisible="show_preview"/>
+                    <button name="action_generate_html"
+                            type="object"
+                            string="Generate Preview"
+                            class="btn-primary"
+                            help="Generate the index HTML and open it in a new tab"/>
+                    <button name="action_download_html"
+                            type="object"
+                            string="Download Index"
+                            class="btn-secondary"
+                            help="Generate and download the index HTML file"/>
                 </header>
                 <sheet>
+                    <!-- hidden technical fields -->
                     <field name="generated_file" invisible="1"/>
-                    <field name="template_file" invisible="1"/>
-                    <field name="show_preview" invisible="1"/>
-                    <div class="row g-3">
-                        <div class="col-12 col-xl-5 bsi_editor_panel">
-                            <div style="display: flex; flex-direction: column; gap: 16px;">
-                                <div style="border: 1px solid #d8dadd; border-radius: 8px; background: #fff; padding: 16px;">
-                                    <div style="font-weight: 600; color: #374151; margin-bottom: 12px; text-transform: uppercase; font-size: 12px;">Template Setup</div>
-                                    <group col="2">
-                                        <field name="template_attachment_ids" widget="many2many_binary" colspan="2"/>
-                                        <field name="module_logo" widget="image" options="{'size': [96, 96]}" class="oe_avatar"/>
-                                    </group>
-                                </div>
+                    <field name="index_file_template_filename" invisible="1"/>
 
-                                <div style="border: 1px solid #d8dadd; border-radius: 8px; background: #fff; padding: 16px;">
-                                    <div style="font-weight: 600; color: #374151; margin-bottom: 12px; text-transform: uppercase; font-size: 12px;">Hero Section</div>
-                                    <group col="2">
-                                        <field name="company_name" class="bsi_wrap_field"/>
-                                        <field name="version" class="bsi_wrap_field"/>
-                                        <field name="topbar_text" colspan="2" class="bsi_wrap_field"/>
-                                        <field name="main_header" colspan="2" class="bsi_wrap_field"/>
-                                        <field name="main_des" colspan="2" class="bsi_wrap_field"/>
-                                        <field name="primary_cta_label" class="bsi_wrap_field"/>
-                                        <field name="secondary_cta_label" class="bsi_wrap_field"/>
-                                    </group>
-                                </div>
+                    <div style="display:flex;flex-direction:column;gap:16px;">
 
-                                <div style="border: 1px solid #d8dadd; border-radius: 8px; background: #fff; padding: 16px;">
-                                    <div style="font-weight: 600; color: #374151; margin-bottom: 12px; text-transform: uppercase; font-size: 12px;">SEO &amp; Branding</div>
-                                    <group col="2">
-                                        <field name="seo_title" colspan="2" class="bsi_wrap_field"/>
-                                        <field name="seo_description" colspan="2" class="bsi_wrap_field"/>
-                                        <field name="accent_color" widget="color"/>
-                                        <field name="gold_color" widget="color"/>
-                                        <field name="footer_tagline" colspan="2" class="bsi_wrap_field"/>
-                                        <field name="copyright_year"/>
-                                    </group>
-                                </div>
+                        <!-- ── Template ── -->
+                        <div style="border:1px solid #d8dadd;border-radius:8px;background:#fff;padding:16px;">
+                            <div style="font-weight:600;color:#374151;margin-bottom:12px;text-transform:uppercase;font-size:12px;">Template</div>
+                            <group col="2">
+                                <field name="index_file_id"
+                                       string="Template Library"
+                                       colspan="2"
+                                       options="{'no_create': false}"
+                                       help="Select a saved template. Overrides the uploaded file below."/>
+                                <field name="index_file_template"
+                                       widget="binary"
+                                       filename="index_file_template_filename"
+                                       string="Loaded Template"
+                                       readonly="1"
+                                       colspan="2"
+                                       invisible="not index_file_id"/>
+                                <field name="template_attachment_ids"
+                                       widget="many2many_binary"
+                                       colspan="2"
+                                       string="Custom Template File (optional)"
+                                       help="Upload a custom index.html. Used only when no library template is selected."
+                                       invisible="index_file_id"/>
+                            </group>
+                        </div>
 
-                                <div style="border: 1px solid #d8dadd; border-radius: 8px; background: #fff; padding: 16px;">
-                                    <div style="font-weight: 600; color: #374151; margin-bottom: 12px; text-transform: uppercase; font-size: 12px;">Module Details Section</div>
-                                    <group col="2">
-                                        <field name="sub_heading" class="bsi_wrap_field"/>
-                                        <field name="sub_des" class="bsi_wrap_field"/>
-                                    </group>
-                                </div>
+                        <!-- ── Hero Section ── -->
+                        <div style="border:1px solid #d8dadd;border-radius:8px;background:#fff;padding:16px;">
+                            <div style="font-weight:600;color:#374151;margin-bottom:12px;text-transform:uppercase;font-size:12px;">Hero Section</div>
+                            <group col="2">
+                                <field name="main_header"
+                                       colspan="2" class="bsi_wrap_field"
+                                       placeholder="e.g. Advanced Inventory Report"/>
+                                <field name="main_description"
+                                       colspan="2" class="bsi_wrap_field"
+                                       placeholder="e.g. Powerful filters for fast inventory insights"/>
+                                <field name="company_email"
+                                       colspan="2" class="bsi_wrap_field"
+                                       placeholder="e.g. contact@botspotinfoware.com"
+                                       help="Shown in the header contact pill and the support section"/>
+                            </group>
+                        </div>
 
-                                <div style="border: 1px solid #d8dadd; border-radius: 8px; background: #fff; padding: 16px;">
-                                    <div style="font-weight: 600; color: #374151; margin-bottom: 12px; text-transform: uppercase; font-size: 12px;">Demo Section</div>
-                                    <group col="2">
-                                        <field name="demo_video_link" colspan="2" class="bsi_wrap_field"/>
-                                        <field name="demo_heading" class="bsi_wrap_field"/>
-                                        <field name="demo_des" class="bsi_wrap_field"/>
-                                    </group>
-                                </div>
+                        <!-- ── SEO ── -->
+                        <div style="border:1px solid #d8dadd;border-radius:8px;background:#fff;padding:16px;">
+                            <div style="font-weight:600;color:#374151;margin-bottom:12px;text-transform:uppercase;font-size:12px;">SEO</div>
+                            <group col="2">
+                                <field name="seo_title"
+                                       colspan="2" class="bsi_wrap_field"
+                                       placeholder="e.g. Advanced Inventory Report | Odoo 18"/>
+                                <field name="seo_description"
+                                       colspan="2" class="bsi_wrap_field"
+                                       placeholder="e.g. Generate detailed inventory reports with advanced filters and export options."/>
+                            </group>
+                        </div>
 
-                                <div style="border: 1px solid #d8dadd; border-radius: 8px; background: #fff; padding: 16px;">
-                                    <div style="font-weight: 600; color: #374151; margin-bottom: 12px; text-transform: uppercase; font-size: 12px;">Support &amp; Section Controls</div>
-                                    <group col="2">
-                                        <field name="website" colspan="2" class="bsi_wrap_field"/>
-                                        <field name="company_email" colspan="2" class="bsi_wrap_field"/>
-                                        <field name="auto_hide_empty_sections"/>
-                                    </group>
-                                    <group col="4">
-                                        <field name="hide_steps_section"/>
-                                        <field name="hide_demo_section"/>
-                                        <field name="hide_features_section"/>
-                                        <field name="hide_screenshots_section"/>
-                                        <field name="hide_related_modules_section"/>
-                                        <field name="hide_languages_section"/>
-                                        <field name="hide_services_section"/>
-                                        <field name="hide_support_section"/>
-                                    </group>
-                                </div>
+                        <!-- ── Why Choose Section ── -->
+                        <div style="border:1px solid #d8dadd;border-radius:8px;background:#fff;padding:16px;">
+                            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+                                <div style="font-weight:600;color:#374151;text-transform:uppercase;font-size:12px;">Why Choose Section</div>
+                                <field name="hide_why_choose_section" widget="boolean_toggle" nolabel="1"/>
+                            </div>
+                            <group col="2" invisible="hide_why_choose_section">
+                                <field name="why_choose_title"
+                                       colspan="2" class="bsi_wrap_field"
+                                       placeholder="e.g. Why Customers Choose This Module"/>
+                                <field name="why_choose_para1"
+                                       colspan="2" class="bsi_wrap_field"
+                                       placeholder="e.g. This module provides advanced filtering and reporting capabilities…"/>
+                                <field name="why_choose_para2"
+                                       colspan="2" class="bsi_wrap_field"
+                                       placeholder="e.g. Whether you need to track stock movements or analyse usage patterns…"/>
+                            </group>
 
-                                <notebook>
-                                    <page name="Module steps" string="Module Steps">
-                                        <field name="module_steps">
-                                            <list editable="bottom">
-                                                <field name="module_step_icon" widget="image"/>
-                                                <field name="module_step_heading" class="bsi_wrap_field"/>
-                                                <field name="module_step_des" class="bsi_wrap_field"/>
-                                            </list>
-                                        </field>
-                                    </page>
+                            <!-- Stats sub-section -->
+                            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px;margin-bottom:8px;"
+                                 invisible="hide_why_choose_section">
+                                <div style="font-weight:600;color:#6b7280;font-size:11px;text-transform:uppercase;">Stats (3 Cards)</div>
+                                <field name="hide_stats_section" widget="boolean_toggle" nolabel="1"
+                                       invisible="hide_why_choose_section"/>
+                            </div>
 
-                                    <page name="Features" string="Features">
-                                        <group>
-                                            <field name="feature_main_des" string="Feature Description" class="bsi_wrap_field"/>
-                                        </group>
-                                        <field name="feature_ids">
-                                            <list editable="bottom">
-                                                <field name="feature_title" string="Title"/>
-                                                <field name="feature_heading" class="bsi_wrap_field"/>
-                                                <field name="feature_des" class="bsi_wrap_field"/>
-                                            </list>
-                                        </field>
-                                    </page>
-
-                                    <page name="Screenshots" string="Screenshots">
-                                        <field name="screenshot_ids">
-                                            <list editable="bottom">
-                                                <field name="ss_title" class="bsi_wrap_field"/>
-                                                <field name="ss_heading" class="bsi_wrap_field"/>
-                                                <field name="ss_des" class="bsi_wrap_field"/>
-                                                <field name="ss_image" class="bsi_wrap_field" widget="image"/>
-                                            </list>
-                                        </field>
-                                    </page>
-                                </notebook>
+                            <div invisible="hide_why_choose_section or hide_stats_section">
+                                <!-- Card 1 -->
+                                <div style="font-size:11px;font-weight:600;color:#875A7B;margin-bottom:4px;text-transform:uppercase;">Card 1</div>
+                                <group col="4">
+                                    <field name="stat_1_value" string="Views Header"      class="bsi_wrap_field" placeholder="e.g. 9+"/>
+                                    <field name="stat_1_label" string="Views Description" class="bsi_wrap_field" placeholder="e.g. Filter Options"/>
+                                </group>
+                                <!-- Card 2 -->
+                                <div style="font-size:11px;font-weight:600;color:#875A7B;margin-bottom:4px;text-transform:uppercase;">Card 2</div>
+                                <group col="4">
+                                    <field name="stat_2_value" string="Version to Version"  class="bsi_wrap_field" placeholder="e.g. v16–v18"/>
+                                    <field name="stat_2_label" string="Version Description" class="bsi_wrap_field" placeholder="e.g. Compatible Versions"/>
+                                </group>
+                                <!-- Card 3 -->
+                                <div style="font-size:11px;font-weight:600;color:#875A7B;margin-bottom:4px;text-transform:uppercase;">Card 3</div>
+                                <group col="4">
+                                    <field name="stat_3_value" string="Total Languages"       class="bsi_wrap_field" placeholder="e.g. 6"/>
+                                    <field name="stat_3_label" string="Language Description"  class="bsi_wrap_field" placeholder="e.g. Languages"/>
+                                </group>
                             </div>
                         </div>
-                        <div class="col-12 col-xl-7 bsi_preview_panel" invisible="not show_preview">
-                            <div style="position: sticky; top: 8px; border: 1px solid #d8dadd; border-radius: 8px; background: #fff; padding: 12px;">
-                                <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 10px;">
-                                    <div style="font-weight: 600; color: #374151; text-transform: uppercase; font-size: 12px;">HTML Preview</div>
-                                    <div style="color: #6b7280; font-size: 12px;">Generated page</div>
-                                </div>
-                                <div class="bsi_preview_frame_wrap">
-                                    <button name="action_open_preview"
-                                            type="object"
-                                            string="Open Preview"
-                                            class="btn btn-primary bsi_preview_open_btn"
-                                            invisible="not generated_file"/>
-                                    <field name="preview_html" widget="html" nolabel="1" readonly="1"/>
-                                </div>
+
+                        <!-- ── How It Works Section ── -->
+                        <div style="border:1px solid #d8dadd;border-radius:8px;background:#fff;padding:16px;">
+                            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+                                <div style="font-weight:600;color:#374151;text-transform:uppercase;font-size:12px;">How It Works Section</div>
+                                <field name="hide_steps_section" widget="boolean_toggle" nolabel="1"/>
                             </div>
+                            <group col="2" invisible="hide_steps_section">
+                                <field name="how_it_works_heading"
+                                       colspan="2" class="bsi_wrap_field"
+                                       placeholder="e.g. Three steps to instant clarity"/>
+                            </group>
                         </div>
+
+                        <!-- ── Features Section ── -->
+                        <div style="border:1px solid #d8dadd;border-radius:8px;background:#fff;padding:16px;">
+                            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+                                <div style="font-weight:600;color:#374151;text-transform:uppercase;font-size:12px;">Features Section</div>
+                                <field name="hide_features_section" widget="boolean_toggle" nolabel="1"/>
+                            </div>
+                            <group col="2" invisible="hide_features_section">
+                                <field name="features_main_heading"
+                                       colspan="2" class="bsi_wrap_field"
+                                       placeholder="e.g. All-in-One Solution"/>
+                                <field name="feature_main_description"
+                                       colspan="2" class="bsi_wrap_field"
+                                       placeholder="e.g. Everything you need, built into a single module"/>
+                            </group>
+                        </div>
+
+                        <!-- ── Screenshots Section ── -->
+                        <div style="border:1px solid #d8dadd;border-radius:8px;background:#fff;padding:16px;">
+                            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+                                <div style="font-weight:600;color:#374151;text-transform:uppercase;font-size:12px;">Screenshots Section</div>
+                                <field name="hide_screenshots_section" widget="boolean_toggle" nolabel="1"/>
+                            </div>
+                            <group col="2" invisible="hide_screenshots_section">
+                                <field name="screenshot_section_description"
+                                       colspan="2" class="bsi_wrap_field"
+                                       placeholder="e.g. Step-by-step visual walkthrough of the module"/>
+                            </group>
+                        </div>
+
+                        <!-- ── Demo Video Section ── -->
+                        <div style="border:1px solid #d8dadd;border-radius:8px;background:#fff;padding:16px;">
+                            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+                                <div style="font-weight:600;color:#374151;text-transform:uppercase;font-size:12px;">Demo Video Section</div>
+                                <field name="hide_demo_section" widget="boolean_toggle" nolabel="1"/>
+                            </div>
+                            <group col="2" invisible="hide_demo_section">
+                                <field name="demo_video_link"
+                                       colspan="2" class="bsi_wrap_field"
+                                       placeholder="e.g. https://www.youtube.com/watch?v=XXXXXXXXX"/>
+                                
+                                <field name="demo_heading"
+                                       class="bsi_wrap_field"
+                                       placeholder="e.g. Watch It in Action"/>
+                                <field name="demo_description"
+                                       class="bsi_wrap_field"
+                                       placeholder="e.g. See the full workflow from start to finish"/>
+                            </group>
+                        </div>
+
+                        <!-- ── Related Modules Section ── -->
+                        <div style="border:1px solid #d8dadd;border-radius:8px;background:#fff;padding:16px;">
+                            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+                                <div style="font-weight:600;color:#374151;text-transform:uppercase;font-size:12px;">Related Modules Section</div>
+                                <field name="hide_related_modules_section" widget="boolean_toggle" nolabel="1"/>
+                            </div>
+                            <group col="2" invisible="hide_related_modules_section">
+                                <field name="related_modules_explore_url"
+                                       colspan="2" class="bsi_wrap_field"
+                                       placeholder="e.g. https://apps.odoo.com/apps/modules/browse?author=Botspot+Infoware"/>
+                            </group>
+                        </div>
+
+                        <!-- ── Multi-Language Section ── -->
+                        <div style="border:1px solid #d8dadd;border-radius:8px;background:#fff;padding:16px;">
+                            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+                                <div style="font-weight:600;color:#374151;text-transform:uppercase;font-size:12px;">Multi-Language Section</div>
+                                <field name="hide_language_section" widget="boolean_toggle" nolabel="1"/>
+                            </div>
+                            <div style="font-size:12px;color:#6b7280;margin-bottom:10px;"
+                                 invisible="hide_language_section">
+                                Select which languages appear in the index. If none selected, all 6 default languages are shown automatically.
+                            </div>
+                            <field name="language_ids"
+                                   widget="many2many_tags"
+                                   invisible="hide_language_section"
+                                   options="{'no_create': false}"/>
+                        </div>
+
+                        <!-- ── Company &amp; Footer ── -->
+                        <div style="border:1px solid #d8dadd;border-radius:8px;background:#fff;padding:16px;">
+                            <div style="font-weight:600;color:#374151;margin-bottom:12px;text-transform:uppercase;font-size:12px;">Company &amp; Footer</div>
+                            <group col="2">
+                                <field name="company_name"
+                                       class="bsi_wrap_field"
+                                       placeholder="e.g. Botspot Infoware Pvt. Ltd."/>
+                                <field name="copyright_year"
+                                       class="bsi_wrap_field"
+                                       placeholder="e.g. 2026"/>
+                                <field name="website"
+                                       colspan="2" class="bsi_wrap_field"
+                                       placeholder="e.g. https://www.botspotinfoware.com"/>
+                            </group>
+                        </div>
+
+                        <!-- ── General Settings ── -->
+                        <div style="border:1px solid #d8dadd;border-radius:8px;background:#fff;padding:16px;">
+                            <div style="font-weight:600;color:#374151;margin-bottom:12px;text-transform:uppercase;font-size:12px;">General Settings</div>
+                            <group col="2">
+                                <field name="auto_hide_empty_sections"
+                                       help="Automatically removes Features, Screenshots, Demo and Related Modules tabs when they have no content. Steps section is always hidden when empty."/>
+                            </group>
+                        </div>
+
+                        <!-- ── Content Tabs ── -->
+                        <notebook class="w-100">
+                            <page name="steps" string="How It Works Steps">
+                                <field name="module_steps">
+                                    <list editable="bottom">
+                                        <field name="sequence"         widget="handle"/>
+                                        <field name="step_heading"     class="bsi_wrap_field" placeholder="e.g. Install the Module"/>
+                                        <field name="step_description" class="bsi_wrap_field" placeholder="e.g. Download and install from the Odoo App Store"/>
+                                    </list>
+                                </field>
+                            </page>
+
+                            <page name="features" string="Features">
+                                <field name="feature_ids">
+                                    <list editable="bottom">
+                                        <field name="sequence"            widget="handle"/>
+                                        <field name="feature_title"       string="Category Label" class="bsi_wrap_field" placeholder="e.g. Smart Filter"/>
+                                        <field name="feature_heading"     class="bsi_wrap_field"  placeholder="e.g. Advanced Filtering"/>
+                                        <field name="feature_description" class="bsi_wrap_field"  placeholder="e.g. Filter products by date, location, category and more"/>
+                                    </list>
+                                </field>
+                            </page>
+
+                            <page name="screenshots" string="Screenshots">
+                                <field name="screenshot_ids">
+                                    <list editable="bottom">
+                                        <field name="sequence"       widget="handle"/>
+                                        <field name="ss_heading"     class="bsi_wrap_field" placeholder="e.g. Step 1: Open the Inventory Report menu"/>
+                                        <field name="ss_description" class="bsi_wrap_field" placeholder="e.g. Navigate to Inventory → Reporting → Advanced Report"/>
+                                        <field name="ss_image"       widget="image" options="{'size': [80, 60]}"/>
+                                    </list>
+                                </field>
+                            </page>
+
+                            <page name="related_modules" string="Related Modules">
+                                <field name="related_module_ids">
+                                    <list editable="bottom">
+                                        <field name="sequence"          widget="handle"/>
+                                        <field name="name"              class="bsi_wrap_field" placeholder="e.g. BSI Delivery Slot"/>
+                                        <field name="short_description" class="bsi_wrap_field" placeholder="e.g. Manage delivery time slots for customer orders"/>
+                                        <field name="price"             class="bsi_wrap_field" placeholder="e.g. $15.00"/>
+                                        <field name="store_url"         class="bsi_wrap_field" placeholder="e.g. https://apps.odoo.com/apps/modules/18.0/bsi_delivery_slot/"/>
+                                        <field name="image"             widget="image" options="{'size': [80, 60]}"/>
+                                    </list>
+                                </field>
+                            </page>
+                        </notebook>
+
                     </div>
                 </sheet>
             </form>
         </field>
     </record>
 
-    <record id="bsi_index_generate_action" model="ir.actions.act_window">
-        <field name="name">Index Generate</field>
-        <field name="res_model">index.file.generator</field>
+    <!-- ── Window Action ── -->
+    <record id="bsi_index_generator_action" model="ir.actions.act_window">
+        <field name="name">Index Generator</field>
+        <field name="res_model">bsi.index.generator</field>
         <field name="view_mode">list,form</field>
     </record>
 
-    <menuitem id="bsi_index_generate_root_menu" name="Bsi Index Generate" sequence="1"/>
-    <menuitem id="bsi_index_generate_menu" name="Index" action="bsi_index_generate_action" parent="bsi_index_generate_root_menu" sequence="2"/>
+    <!-- ── Menu Items ── -->
+    <menuitem id="bsi_dynamic_index_gen_root"
+              name="BSI Index Generator"
+              sequence="1"/>
+
+    <menuitem id="bsi_dynamic_index_gen_menu"
+              name="Index Generator"
+              action="bsi_index_generator_action"
+              parent="bsi_dynamic_index_gen_root"
+              sequence="10"/>
+
+    <menuitem id="bsi_index_file_menu"
+              name="Index Files"
+              action="bsi_index_file_action"
+              parent="bsi_dynamic_index_gen_root"
+              sequence="20"/>
+
+    <menuitem id="bsi_index_language_menu"
+              name="Languages"
+              action="bsi_index_language_action"
+              parent="bsi_dynamic_index_gen_root"
+              sequence="30"/>
 
 </odoo>
